@@ -28,7 +28,9 @@ public:
     ssl_error( const string & s_attempt,
                const int error_code = ERR_get_error() )
         : tagged_error( ssl_error_category(), s_attempt, error_code )
-    {}
+    {
+        cout << ERR_GET_REASON( error_code );
+    }
 };
 
 class OpenSSL
@@ -76,7 +78,7 @@ public:
 SSL_CTX * initialize_new_context( const SSL_MODE type )
 {
     OpenSSL::global_context();
-    SSL_CTX * ret = SSL_CTX_new( type == CLIENT ? TLSv1_1_client_method() : TLSv1_1_server_method() );
+    SSL_CTX * ret = SSL_CTX_new( type == CLIENT ? TLS_client_method() : TLS_server_method() );
     if ( not ret ) {
         throw ssl_error( "SSL_CTL_new" );
     }

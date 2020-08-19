@@ -34,16 +34,16 @@ public:
 class OpenSSL
 {
 private:
-    vector<mutex> locks_;
+    // vector<mutex> locks_;
 
-    static void locking_function( int mode, int n, const char *, int )
-    {
-        if ( mode & CRYPTO_LOCK ) {
-            OpenSSL::global_context().locks_.at( n ).lock();
-        } else {
-            OpenSSL::global_context().locks_.at( n ).unlock();
-        }
-    }
+    // static void locking_function( int mode, int n, const char *, int )
+    // {
+    //     if ( mode & CRYPTO_LOCK ) {
+    //         OpenSSL::global_context().locks_.at( n ).lock();
+    //     } else {
+    //         OpenSSL::global_context().locks_.at( n ).unlock();
+    //     }
+    // }
 
     static unsigned long id_function( void )
     {
@@ -52,19 +52,18 @@ private:
 
 public:
     OpenSSL()
-        : locks_( CRYPTO_num_locks() )
     {
         /* SSL initialization: Needs to be done exactly once */
         /* load algorithms/ciphers */
-        SSL_library_init();
-        OpenSSL_add_all_algorithms();
+        // SSL_library_init();
+        // OpenSSL_add_all_algorithms();
 
         /* load error messages */
-        SSL_load_error_strings();
+        // SSL_load_error_strings();
 
         /* set thread-safe callbacks */
-        CRYPTO_set_locking_callback( locking_function );
-        CRYPTO_set_id_callback( id_function );
+        // CRYPTO_set_locking_callback( locking_function );
+        // CRYPTO_set_id_callback( id_function );
     }
 
     static OpenSSL & global_context( void )
@@ -77,7 +76,7 @@ public:
 SSL_CTX * initialize_new_context( const SSL_MODE type )
 {
     OpenSSL::global_context();
-    SSL_CTX * ret = SSL_CTX_new( type == CLIENT ? SSLv23_client_method() : SSLv23_server_method() );
+    SSL_CTX * ret = SSL_CTX_new( type == CLIENT ? TLSv1_1_client_method() : TLSv1_1_server_method() );
     if ( not ret ) {
         throw ssl_error( "SSL_CTL_new" );
     }

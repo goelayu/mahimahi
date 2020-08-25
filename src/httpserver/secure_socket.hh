@@ -20,12 +20,15 @@ private:
     struct SSL_deleter { void operator()( SSL * x ) const { SSL_free( x ); } };
     typedef std::unique_ptr<SSL, SSL_deleter> SSL_handle;
     SSL_handle ssl_;
+    bool isConnected;
 
     SecureSocket( TCPSocket && sock, SSL * ssl );
 
 public:
+    void set_host_name(const char * hostname);
     void connect( void );
     void accept( void );
+    bool is_connected( void );
 
     std::string read( void );
     void write( const std::string & message );

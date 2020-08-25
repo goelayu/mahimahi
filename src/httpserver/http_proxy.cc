@@ -20,6 +20,7 @@
 #include "secure_socket.hh"
 #include "backing_store.hh"
 #include "exception.hh"
+#include "util.hh"
 
 using namespace std;
 using namespace PollerShortNames;
@@ -93,6 +94,7 @@ void HTTPProxy::handle_tcp( HTTPBackingStore & backing_store )
 {
     thread newthread( [&] ( TCPSocket client ) {
             try {
+
                 /* get original destination for connection request */
                 Address server_addr = client.original_dest();
 
@@ -106,7 +108,8 @@ void HTTPProxy::handle_tcp( HTTPBackingStore & backing_store )
 
                 /* handle TLS */
                 SecureSocket tls_server( client_context_.new_secure_socket( move( server ) ) );
-                tls_server.connect();
+                // Establish TSL connection only when the hostname is available
+                // tls_server.connect();
 
                 SecureSocket tls_client( server_context_.new_secure_socket( move( client ) ) );
                 tls_client.accept();

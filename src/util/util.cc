@@ -14,6 +14,8 @@
 #include <arpa/inet.h>
 #include <memory>
 #include <numeric>
+#include <sstream>
+#include <algorithm>
 
 #include "util.hh"
 #include "exception.hh"
@@ -204,4 +206,29 @@ string get_working_directory( void )
     }
 
     return cwd_ptr.get();
+}
+
+void rtrim(string &s) {
+    s.erase(find_if(s.rbegin(), s.rend(), [](int ch) {
+        return !isspace(ch);
+    }).base(), s.end());
+}
+
+string get_host_name( string req )
+{
+    istringstream iss(req);
+    string line;
+    string item;
+    string prev;
+    while (getline(iss, line)) {
+        stringstream ss(line);
+        while (getline(ss,item, ' ')){
+            if (prev == "Host:"){
+                    rtrim(item);
+                    return item;
+            }
+            prev = item;
+        }
+    }
+    return "";
 }

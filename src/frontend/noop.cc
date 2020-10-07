@@ -41,7 +41,7 @@ int main( int argc, char *argv[] )
         environ = nullptr;
 
         check_requirements( argc, argv );
-        
+
         /* get working directory */
         const string working_directory { get_working_directory() };
 
@@ -51,7 +51,13 @@ int main( int argc, char *argv[] )
         /* what command will we run inside the container? */
         vector< string > command;
 
-        command.push_back("bash");
+        if ( argc < 2 ) {
+            command.push_back( shell_path() );
+        } else {
+            for ( int i = 1; i < argc; i++ ) {
+                command.push_back( argv[ i ] );
+            }
+        }
 
         /* create a new network namespace */
         SystemCall( "unshare", unshare( CLONE_NEWNET ) );

@@ -66,6 +66,13 @@ int main( int argc, char *argv[] )
         interface_ioctl( SIOCSIFFLAGS, "lo",
                          [] ( ifreq &ifr ) { ifr.ifr_flags = IFF_UP; } );
 
+        vector< Address > nameservers = all_nameservers();
+
+        for ( unsigned int server_num = 0; server_num < nameservers.size(); server_num++ ) {
+            const string interface_name = "nameserver" + to_string( server_num );
+            add_dummy_interface( interface_name, nameservers.at( server_num ) );
+        }
+
         /* initialize event loop */
         EventLoop event_loop;
 

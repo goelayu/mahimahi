@@ -138,9 +138,16 @@ int main( void )
             cout << HTTPResponse( best_match.response() ).str();
             return EXIT_SUCCESS;
         } else {                /* no acceptable matches for request */
-            cout << "HTTP/1.1 404 Not Found" << CRLF;
-            cout << "Content-Type: text/plain" << CRLF << CRLF;
-            cout << "replayserver: could not find a match for " << request_line << CRLF;
+            //cout << "HTTP/1.1 404 Not Found" << CRLF;
+            //cout << "Content-Type: text/plain" << CRLF << CRLF;
+            //cout << "replayserver: could not find a match for " << request_line << CRLF;
+            //return EXIT_FAILURE;
+	    string response_body = "replayserver: could not find a match.";
+      	    cout << "HTTP/1.1 404 Not Found" << CRLF;
+            cout << "Content-Type: text/plain" << CRLF;
+            cout << "Content-Length: " << response_body.length() << CRLF;
+            cout << "Cache-Control: max-age=60" << CRLF << CRLF;
+            cout << response_body << CRLF;
             return EXIT_FAILURE;
         }
     } catch ( const exception & e ) {

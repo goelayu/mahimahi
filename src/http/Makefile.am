@@ -1,5 +1,8 @@
 AM_CPPFLAGS = -I$(srcdir)/../util -I../protobufs $(CXX11_FLAGS)
 AM_CXXFLAGS = $(PICKY_CXXFLAGS)
+AM_LIBS = -lboost_iostreams -lz
+AM_LDFLAGS = -lboost_iostreams -lz
+
 
 noinst_LIBRARIES = libhttp.a
 
@@ -14,3 +17,4 @@ libhttp_a_SOURCES = http_request_parser.hh \
         http_message.hh http_message.cc \
         http_message_sequence.hh \
         backing_store.hh backing_store.cc
+

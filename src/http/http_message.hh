@@ -68,6 +68,10 @@ public:
     bool has_header( const std::string & header_name ) const;
     const std::string & get_header_value( const std::string & header_name ) const;
 
+    void rewrite_body( std::string & body);
+    void update_header( const std::string & header_name, std::string val );
+    const std::string gen_random(const int len) const;
+
     /* serialize the request or response as one string */
     std::string str( void ) const;
 

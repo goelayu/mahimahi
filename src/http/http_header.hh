@@ -17,6 +17,7 @@ public:
 
     const std::string & key( void ) const { return key_; }
     const std::string & value( void ) const { return value_; }
+    void set_value(std::string val) {value_ = val;}
 
     std::string str( void ) const { return key_ + ": " + value_; }
 

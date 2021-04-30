@@ -28,22 +28,22 @@ mm_meter_LDFLAGS = -pthread
 
 bin_PROGRAMS += mm-webrecord
 mm_webrecord_SOURCES = recordshell.cc
-mm_webrecord_LDADD = -lrt ../httpserver/libhttpserver.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a ../util/libutil.a $(protobuf_LIBS) $(libcrypto_LIBS) $(libssl_LIBS)
+mm_webrecord_LDADD = -lrt ../httpserver/libhttpserver.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a ../util/libutil.a $(protobuf_LIBS) $(libcrypto_LIBS) $(libssl_LIBS) -lboost_iostreams
 mm_webrecord_LDFLAGS = -pthread
 
 bin_PROGRAMS += mm-webreplay
 mm_webreplay_SOURCES = replayshell.cc web_server.hh web_server.cc
-mm_webreplay_LDADD = -lrt ../util/libutil.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a $(protobuf_LIBS)
+mm_webreplay_LDADD = -lrt ../util/libutil.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a $(protobuf_LIBS) -lboost_iostreams
 mm_webreplay_LDFLAGS = -pthread
 
 bin_PROGRAMS += mm-replayserver
 mm_replayserver_SOURCES = replayserver.cc
-mm_replayserver_LDADD = -lrt ../util/libutil.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a $(protobuf_LIBS)
+mm_replayserver_LDADD = -lrt ../util/libutil.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a $(protobuf_LIBS) -lboost_iostreams
 mm_replayserver_LDFLAGS = -pthread
 
 bin_PROGRAMS += mm-noop
 mm_noop_SOURCES = noop.cc 
-mm_noop_LDADD = -lrt ../util/libutil.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a $(protobuf_LIBS)
+mm_noop_LDADD = -lrt ../util/libutil.a ../http/libhttp.a ../protobufs/libhttprecordprotos.a $(protobuf_LIBS) -lboost_iostreams
 mm_noop_LDFLAGS = -pthread
 
 lib_LTLIBRARIES = libmod_deepcgi.la

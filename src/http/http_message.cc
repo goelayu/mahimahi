@@ -27,7 +27,7 @@ void HTTPMessage::add_header( const std::string & str )
     // if (str.find("Content-Length") != std::string::npos) {
     //     return;
     // }
-    cout << "str is " <<  str << endl;
+    // cout << "str is " <<  str << endl;
     assert( state_ == HEADERS_PENDING );
     headers_.emplace_back( str );
 }
@@ -210,6 +210,8 @@ void HTTPMessage::rewrite_body( std::string & body)
 {
     std::string zip_type;
     std::string mime_type;
+
+    std::string prefix = "<script> Date=function(r){function n(n,t,a,u,i,f,o){var c;switch(arguments.length){case 0:case 1:c=new r(e);break;default:a=a||1,u=u||0,i=i||0,f=f||0,o=o||0,c=new r(e)}return c}var e=1619575609705;return n.parse=r.parse,n.UTC=r.UTC,n.toString=r.toString,n.prototype=r.prototype,n.now=function(){return e},n}(Date),Math.exp=function(){function r(r){var n=new ArrayBuffer(8);return new Float64Array(n)[0]=r,0|new Uint32Array(n)[1]}function n(r){var n=new ArrayBuffer(8);return new Float64Array(n)[0]=r,new Uint32Array(n)[0]}function e(r,n){var e=new ArrayBuffer(8);return new Uint32Array(e)[1]=r,new Uint32Array(e)[0]=n,new Float64Array(e)[0]}var t=[.5,-.5],a=[.6931471803691238,-.6931471803691238],u=[1.9082149292705877e-10,-1.9082149292705877e-10];return function(i){var f,o=0,c=0,w=0,y=r(i),v=y>>31&1;if((y&=2147483647)>=1082535490){if(y>=2146435072)return isNaN(i)?i:0==v?i:0;if(i>709.782712893384)return 1/0;if(i<-745.1332191019411)return 0}if(y>1071001154){if(y<1072734898){if(1==i)return Math.E;c=i-a[v],w=u[v],o=1-v-v}else o=1.4426950408889634*i+t[v]|0,f=o,c=i-f*a[0],w=f*u[0];i=c-w}else{if(y<1043333120)return 1+i;o=0}f=i*i;var s=i-f*(.16666666666666602+f*(f*(6613756321437934e-20+f*(4.1381367970572385e-8*f-16533902205465252e-22))-.0027777777777015593));if(0==o)return 1-(i*s/(s-2)-i);var A=1-(w-i*s/(2-s)-c);return o>=-1021?A=e((o<<20)+r(A),n(A)):(A=e((o+1e3<<20)+r(A),n(A)),A*=9.332636185032189e-302)}}(),/*Math.random=function(){var r,n,e,t;return r=.8725217853207141,n=.520505596883595,e=.22893249243497849,t=1,function(){var a=2091639*r+2.3283064365386963e-10*t;return r=n,n=e,t=0|a,e=a-t}}()*/Math.random = function(){return 0.9322873996837797},Object.keys=function(r){return function(n){var e;return e=r(n),e.sort(),e}}(Object.keys); </script>";
     for ( const auto & header : headers_ ) {
         /* canonicalize header name per RFC 2616 section 2.1 */
         if ( equivalent_strings( header.key(), "Content-Encoding" ) ) {
@@ -219,11 +221,13 @@ void HTTPMessage::rewrite_body( std::string & body)
         }
     }
 
-    cout << "mime type " << mime_type << endl;
-    cout << "zip type " << zip_type << endl;
+    // cout << "mime type " << mime_type << endl;
+    // cout << "zip type " << zip_type << endl;
     if (mime_type.find("html") == std::string::npos) {
         return;
     }
+
+    cout << "rewriting body " << endl;
 
     if (!zip_type.empty()){
         /*Decompress the string before adding data */
@@ -241,7 +245,7 @@ void HTTPMessage::rewrite_body( std::string & body)
 
     }
 
-    body = "TESTING STRING " + body;
+    body = prefix + body;
     
     if (!zip_type.empty()){
         /*Compress the string back again*/
